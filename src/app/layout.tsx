@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
-import { TRPCReactProvider } from "@/trpc/react";
 import HospitalChat from "@/components/HospitalChat";
 import { EmergencyBar } from "@/components/EmergencyBar";
 import { Toaster } from "sonner";
@@ -257,13 +256,11 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <TRPCReactProvider>
-          <LanguageProvider>
-            <AutoTranslate />
-            {children}
-            <FloatingLangToggle />
-          </LanguageProvider>
-        </TRPCReactProvider>
+        <LanguageProvider>
+          <AutoTranslate />
+          {children}
+          <FloatingLangToggle />
+        </LanguageProvider>
         <Toaster position="top-right" />
         <HospitalChat />
 

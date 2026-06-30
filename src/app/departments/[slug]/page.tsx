@@ -7,6 +7,7 @@ import { Container } from '@/components/ui/Container';
 import { Button } from '@/components/ui/Button';
 import { SPECIALITIES } from '@/lib/constants';
 import DepartmentDetailClient from './department-detail-client';
+import { TRPCReactProvider } from "@/trpc/react";
 import {
   Heart,
   Brain,
@@ -146,7 +147,9 @@ export default async function DepartmentDetailPage({ params }: PageProps) {
         </section>
 
         {/* Client Component for Interactive Elements */}
-        <DepartmentDetailClient slug={slug} departmentName={dept.name} />
+        <TRPCReactProvider>
+          <DepartmentDetailClient slug={slug} departmentName={dept.name} />
+        </TRPCReactProvider>
 
         {/* CTA Section */}
         <section className="bg-gradient-to-r from-primary/90 to-accent/90 py-16 px-6">

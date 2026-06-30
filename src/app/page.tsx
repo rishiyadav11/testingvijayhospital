@@ -10,6 +10,7 @@ import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
 import WhyChooseUs from "@/components/WhyChooseUs";
 import { prisma } from "@/lib/prisma";
+import { TRPCReactProvider } from "@/trpc/react";
 
 export default async function Home() {
   const dbTestimonials = await prisma.testimonial.findMany({
@@ -28,7 +29,9 @@ export default async function Home() {
         <HeroSection />
         <Accreditations />
         <Specialities />
-        <DoctorDirectory />
+        <TRPCReactProvider>
+          <DoctorDirectory />
+        </TRPCReactProvider>
         <Infrastructure />
         <WhyChooseUs />
         <Testimonials reviews={dbTestimonials} />
