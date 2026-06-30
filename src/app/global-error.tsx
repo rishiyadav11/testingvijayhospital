@@ -1,7 +1,5 @@
 'use client';
 
-export const dynamic = 'force-dynamic';
-
 import React from 'react';
 
 export default function GlobalError({
@@ -13,6 +11,7 @@ export default function GlobalError({
 }) {
   return (
     <html lang="en">
+      <head></head>
       <body style={{ margin: 0, padding: 0, backgroundColor: '#f8fafc' }}>
         <div style={{
           display: 'flex',
