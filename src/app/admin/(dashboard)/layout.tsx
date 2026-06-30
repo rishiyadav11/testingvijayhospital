@@ -1,6 +1,6 @@
-'use client';
-
 import AdminLayout from './AdminLayout';
+
+export const dynamic = 'force-dynamic';
 
 export default function DashboardLayout({
   children,
