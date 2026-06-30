@@ -26,6 +26,12 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  transpilePackages: [
+    "@trpc/client",
+    "@trpc/react-query",
+    "@trpc/server",
+    "@tanstack/react-query",
+  ],
   turbopack: {
     resolveAlias: {
       react: "./node_modules/react",
