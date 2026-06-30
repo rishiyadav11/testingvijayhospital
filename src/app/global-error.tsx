@@ -10,9 +10,13 @@ export default function GlobalError({
   reset: () => void;
 }) {
   return (
+    // global-error must include html and body tags. Per the Next.js docs,
+    // metadata is set with the React <title> component (not a <head> tag) —
+    // an empty <head> here triggers React 19's keyed-children warning and
+    // the /_global-error prerender crash.
     <html lang="en">
-      <head></head>
       <body style={{ margin: 0, padding: 0, backgroundColor: '#f8fafc' }}>
+        <title>Something went wrong | Vijay Hospital Narnaul</title>
         <div style={{
           display: 'flex',
           flexDirection: 'column',
