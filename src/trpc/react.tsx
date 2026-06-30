@@ -3,27 +3,39 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { loggerLink, unstable_httpBatchStreamLink } from "@trpc/client";
 import { createTRPCReact } from "@trpc/react-query";
-import { useState } from "react";
 import superjson from "superjson";
 
 import { type AppRouter } from "@/server/api/root";
 
 export const api = createTRPCReact<AppRouter>();
 
-export function TRPCReactProvider(props: { children: React.ReactNode }) {
-  const [queryClient] = useState(
-    () =>
-      new QueryClient({
-        defaultOptions: {
-          queries: {
-            refetchOnWindowFocus: false,
-          },
+let clientQueryClientSingleton: QueryClient | undefined = undefined;
+const getQueryClient = () => {
+  if (typeof window === "undefined") {
+    return new QueryClient({
+      defaultOptions: {
+        queries: {
+          refetchOnWindowFocus: false,
         },
-      })
-  );
+      },
+    });
+  }
+  if (!clientQueryClientSingleton) {
+    clientQueryClientSingleton = new QueryClient({
+      defaultOptions: {
+        queries: {
+          refetchOnWindowFocus: false,
+        },
+      },
+    });
+  }
+  return clientQueryClientSingleton;
+};
 
-  const [trpcClient] = useState(() =>
-    api.createClient({
+let clientTrpcClientSingleton: ReturnType<typeof api.createClient> | undefined = undefined;
+const getTrpcClient = () => {
+  if (typeof window === "undefined") {
+    return api.createClient({
       links: [
         loggerLink({
           enabled: (op) =>
@@ -40,8 +52,34 @@ export function TRPCReactProvider(props: { children: React.ReactNode }) {
           },
         }),
       ],
-    })
-  );
+    });
+  }
+  if (!clientTrpcClientSingleton) {
+    clientTrpcClientSingleton = api.createClient({
+      links: [
+        loggerLink({
+          enabled: (op) =>
+            process.env.NODE_ENV === "development" ||
+            (op.direction === "down" && op.result instanceof Error),
+        }),
+        unstable_httpBatchStreamLink({
+          transformer: superjson,
+          url: getBaseUrl() + "/api/trpc",
+          headers() {
+            const headers = new Headers();
+            headers.set("x-trpc-source", "nextjs-react");
+            return headers;
+          },
+        }),
+      ],
+    });
+  }
+  return clientTrpcClientSingleton;
+};
+
+export function TRPCReactProvider(props: { children: React.ReactNode }) {
+  const queryClient = getQueryClient();
+  const trpcClient = getTrpcClient();
 
   return (
     <QueryClientProvider client={queryClient}>

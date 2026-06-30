@@ -248,7 +248,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${plusJakarta.variable} scroll-smooth`}>
-      <head>
+      <body className="bg-background text-on-surface antialiased pt-[68px] md:pt-0">
         <link
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
           rel="stylesheet"
@@ -257,8 +257,6 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-      </head>
-      <body className="bg-background text-on-surface antialiased pt-[68px] md:pt-0">
         <TRPCReactProvider>
           <LanguageProvider>
             <AutoTranslate />
