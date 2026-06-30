@@ -1,0 +1,43 @@
+
+> vijay-hospital-website@0.1.0 dev
+> next dev
+
+▲ Next.js 16.2.9 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://10.253.7.124:3000
+- Environments: .env
+✓ Ready in 1094ms
+Attention: Next.js now collects completely anonymous telemetry regarding usage.
+This information is used to shape Next.js' roadmap and prioritize features.
+You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+https://nextjs.org/telemetry
+
+
+Persisting failed: Unable to write SST file 00000021.sst
+
+Caused by:
+    The system cannot find the path specified. (os error 3)
+Persisting failed: Another write batch or compaction is already active (Only a single write operations is allowed at a time)
+Persisting failed: Another write batch or compaction is already active (Only a single write operations is allowed at a time)
+⨯ Error: Cannot find module 'D:\vijay hospital website\.next\dev\server\middleware-manifest.json'
+Require stack:
+- D:\vijay hospital website\node_modules\next\dist\server\next-server.js
+- D:\vijay hospital website\node_modules\next\dist\server\dev\next-dev-server.js
+- D:\vijay hospital website\node_modules\next\dist\server\next.js
+- D:\vijay hospital website\node_modules\next\dist\server\lib\start-server.js
+    at ignore-listed frames {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    'D:\\vijay hospital website\\node_modules\\next\\dist\\server\\next-server.js',
+    'D:\\vijay hospital website\\node_modules\\next\\dist\\server\\dev\\next-dev-server.js',
+    'D:\\vijay hospital website\\node_modules\\next\\dist\\server\\next.js',
+    'D:\\vijay hospital website\\node_modules\\next\\dist\\server\\lib\\start-server.js'
+  ]
+}
+⨯ Error: ENOENT: no such file or directory, open 'D:\vijay hospital website\.next\dev\static\development\_buildManifest.js.tmp.3kl9bi024ui'
+    at ignore-listed frames {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\vijay hospital website\\.next\\dev\\static\\development\\_buildManifest.js.tmp.3kl9bi024ui'
+}

@@ -1,0 +1,194 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native"]
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+// Authentication
+model Admin {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String   // hashed with bcrypt
+  name      String
+  createdAt DateTime @default(now())
+}
+
+// Doctors
+model Doctor {
+  id              String        @id @default(cuid())
+  name            String
+  slug            String?       @unique
+  photo           String?
+  photoUrl        String?       // Cloudinary URL
+  department      String        @default("General")
+  specialty       String?
+  qualifications  String        @default("")
+  experience      String        @default("0 years")
+  bio             String?
+  rating          Float         @default(0)
+  availableDays   String?       // JSON stringified array
+  timeSlots       String?
+  status          Status        @default(DRAFT)
+  order           Int           @default(0)
+  seoTitle        String?
+  seoDesc         String?
+  education       String?       // JSON stringified array
+  certifications  String?       // JSON stringified array
+  awards          String?       // JSON stringified array
+  reviews         String?       // JSON stringified array
+  appointments    Appointment[]
+  updatedAt       DateTime      @updatedAt
+  createdAt       DateTime      @default(now())
+}
+
+// Services
+model Service {
+  id          String @id @default(cuid())
+  name        String
+  icon        String
+  description String
+  details     String
+}
+
+// Appointments
+model Appointment {
+  id           String   @id @default(cuid())
+  patientName  String
+  patientEmail String
+  patientPhone String
+  date         String
+  time         String
+  doctorId     String
+  doctor       Doctor   @relation(fields: [doctorId], references: [id])
+  status       String   @default("Pending")
+  notes        String?
+  createdAt    DateTime @default(now())
+}
+
+// Blogs
+model Blog {
+  id            String   @id @default(cuid())
+  slug          String?  @unique
+  title         String
+  excerpt       String?
+  content       String   @default("")
+  featuredImageUrl String?  // Cloudinary URL
+  category      String   @default("Health Tips")
+  tags          String?       // JSON stringified array
+  author        String   @default("Admin")
+  publishedAt   DateTime?
+  status        Status   @default(DRAFT)
+  seoTitle      String?
+  seoDesc       String?
+  keywords      String   @default("")
+  readTime      String   @default("5 min")
+  updatedAt     DateTime @updatedAt
+  createdAt     DateTime @default(now())
+}
+
+// Gallery
+model Gallery {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  type        String   // IMAGE | VIDEO
+  mediaUrl    String   // Cloudinary URL
+  altText     String?
+  category    String
+  order       Int      @default(0)
+  status      Status   @default(DRAFT)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// Careers / Jobs
+model Career {
+  id            String     @id @default(cuid())
+  slug          String?    @unique
+  title         String
+  department    String     @default("")
+  experience    String     @default("")
+  salary        String?
+  jobType       String     @default("Full-time")
+  description   String     @default("")
+  requirements  String     @default("")
+  location      String     @default("Narnaul")
+  status        JobStatus  @default(ACTIVE)
+  postedAt      DateTime   @default(now())
+  expiresAt     DateTime?
+  applications  Application[]
+  updatedAt     DateTime   @updatedAt
+  createdAt     DateTime   @default(now())
+}
+
+// Job Applications
+model Application {
+  id           String   @id @default(cuid())
+  careerId     String
+  career       Career   @relation(fields: [careerId], references: [id], onDelete: Cascade)
+  name         String
+  email        String
+  phone        String
+  resume       String?
+  coverLetter  String?
+  status       String   @default("Pending")
+  createdAt    DateTime @default(now())
+}
+
+// Testimonials
+model Testimonial {
+  id            String   @id @default(cuid())
+  patientName   String
+  photoUrl      String?  // Cloudinary URL
+  recoveryType  String
+  rating        Int      @default(5)
+  text          String
+  visitDate     DateTime?
+  featured      Boolean  @default(false)
+  status        Status   @default(DRAFT)
+  updatedAt     DateTime @updatedAt
+  createdAt     DateTime @default(now())
+}
+
+// Patient Stories
+model PatientStory {
+  id           String   @id @default(cuid())
+  patientName  String
+  age          Int
+  specialty    String
+  condition    String
+  story        String
+  icon         String   @default("hospital")
+  photoUrl     String?
+  rating       Int      @default(5)
+  recoveryTime String
+  featured     Boolean  @default(false)
+  status       Status   @default(DRAFT)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+// Enums
+enum Status {
+  DRAFT
+  PUBLISHED
+}
+
+enum JobStatus {
+  ACTIVE
+  CLOSED
+  DRAFT
+}
+
+// Newsletter Subscribers
+model Subscriber {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
+}
