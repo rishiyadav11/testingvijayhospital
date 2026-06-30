@@ -31,6 +31,18 @@ const nextConfig: NextConfig = {
     "@trpc/server",
     "@tanstack/react-query",
   ],
+  // Next 16 + React 19 has a flaky bug where the internal special pages
+  // (/_global-error, /_not-found) crash during static prerender with a
+  // null React dispatcher ("Cannot read properties of null"). The failing
+  // page changes between builds — a parallel build-worker race. Forcing
+  // single-worker, sequential static generation (min pages per worker set
+  // above the total page count, concurrency 1) avoids the race, and a retry
+  // count self-heals any remaining transient failure.
+  experimental: {
+    staticGenerationRetryCount: 3,
+    staticGenerationMaxConcurrency: 1,
+    staticGenerationMinPagesPerWorker: 1000,
+  },
 };
 
 export default nextConfig;
